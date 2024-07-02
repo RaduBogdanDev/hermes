@@ -10,9 +10,17 @@ class LanguageSerializer(serializers.ModelSerializer):
 
 
 class PeopleSerializer(serializers.ModelSerializer):
+    language = serializers.SerializerMethodField()
+
     class Meta:
         model = People
         fields = '__all__'
+
+    def get_language(self, obj):
+        return {
+            'id': obj.language.id,
+            'name': obj.language.language
+        }
 
 
 class PeopleExternalCCSerializer(serializers.ModelSerializer):
@@ -40,9 +48,17 @@ class PeopleInternalBCCSerializer(serializers.ModelSerializer):
 
 
 class EmailContentSerializer(serializers.ModelSerializer):
+    language = serializers.SerializerMethodField()
+
     class Meta:
         model = EmailContent
         fields = '__all__'
+
+    def get_language(self, obj):
+        return {
+            'id': obj.language.id,
+            'name': obj.language.language
+        }
 
 
 class NotificationSettingsSerializer(serializers.ModelSerializer):

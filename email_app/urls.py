@@ -11,7 +11,7 @@ router.register(r'people_external_bcc', PeopleExternalBCCViewSet)
 router.register(r'people_internal_to', PeopleInternalTOViewSet)
 router.register(r'people_internal_bcc', PeopleInternalBCCViewSet)
 router.register(r'email_content', EmailContentViewSet)
-router.register(r'notification_settings', NotificationSettingsViewSet)
+router.register(r'notification_settings', NotificationSettingsViewSet, basename='notification_settings')
 
 urlpatterns = [
     path('', include(router.urls)),

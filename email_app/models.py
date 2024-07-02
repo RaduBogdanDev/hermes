@@ -1,5 +1,6 @@
 from django.db import models
 from .validators import validate_birthday
+from django.core.exceptions import ValidationError
 
 
 class Language(models.Model):
@@ -66,3 +67,12 @@ class NotificationSettings(models.Model):
 
     def __str__(self):
         return f"{self.internal_time_notification} days before birthday"
+
+    def clean(self):
+        if NotificationSettings.objects.exists() and not self.pk:
+            raise ValidationError('There can be only one NotificationSettings instance.')
+
+    def save(self, *args, **kwargs):
+        if not self.pk and NotificationSettings.objects.exists():
+            raise ValidationError('There can be only one NotificationSettings instance.')
+        return super(NotificationSettings, self).save(*args, **kwargs)

@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
+from rest_framework.response import Response
 from .models import Language, People, PeopleExternalCC, PeopleExternalBCC, PeopleInternalTO, PeopleInternalBCC, \
     EmailContent, NotificationSettings
 from .serializers import LanguageSerializer, PeopleSerializer, PeopleExternalCCSerializer, PeopleExternalBCCSerializer, \
@@ -40,6 +41,29 @@ class EmailContentViewSet(viewsets.ModelViewSet):
     serializer_class = EmailContentSerializer
 
 
-class NotificationSettingsViewSet(viewsets.ModelViewSet):
+class NotificationSettingsViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = NotificationSettings.objects.all()
     serializer_class = NotificationSettingsSerializer
+
+    def get_object(self):
+        # Ensure only one NotificationSettings object exists
+        queryset = self.get_queryset()
+        obj = queryset.first()
+        if obj is None:
+            # If no instance exists, create a default one
+            obj = NotificationSettings.objects.create(internal_time_notification=0)
+        return obj
+
+    def retrieve(self, request, *args, **kwargs):
+        # Override retrieve to get the single instance without needing an ID
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        # Override update to get the single instance without needing an ID
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=kwargs.pop('partial', False))
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)

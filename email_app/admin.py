@@ -92,10 +92,6 @@ class EmailContentAdmin(admin.ModelAdmin):
     list_filter = ('language',)
 
 
-class NotificationSettingsAdmin(admin.ModelAdmin):
-    list_display = ('internal_time_notification', 'created_date', 'updated_date')
-
-
 class PeopleExternalCCAdmin(admin.ModelAdmin):
     form = PeopleExternalCCForm
     list_display = ('name', 'email', 'created_date', 'updated_date')
@@ -127,4 +123,4 @@ admin.site.register(PeopleExternalBCC, PeopleExternalBCCAdmin)
 admin.site.register(PeopleInternalTO, PeopleInternalTOAdmin)
 admin.site.register(PeopleInternalBCC, PeopleInternalBCCAdmin)
 admin.site.register(EmailContent, EmailContentAdmin)
-admin.site.register(NotificationSettings, NotificationSettingsAdmin)
+admin.site.register(NotificationSettings)

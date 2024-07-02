@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Language, People, PeopleExternalCC, PeopleExternalBCC, PeopleInternalTO, PeopleInternalBCC, \
-    EmailContent, NotificationSettings
+    EmailContent, NotificationSettings, EmailLog
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -64,4 +64,11 @@ class EmailContentSerializer(serializers.ModelSerializer):
 class NotificationSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotificationSettings
+        fields = '__all__'
+
+
+
+class EmailLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailLog
         fields = '__all__'

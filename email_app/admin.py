@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.forms import ModelForm, ValidationError
 from .models import (
     Language, People, PeopleExternalCC, PeopleExternalBCC,
-    PeopleInternalTO, PeopleInternalBCC, EmailContent, NotificationSettings
+    PeopleInternalTO, PeopleInternalBCC, EmailContent, NotificationSettings, EmailLog
 )
 
 
@@ -116,6 +116,12 @@ class PeopleInternalBCCAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email')
 
 
+class EmailLogAdmin(admin.ModelAdmin):
+    list_display = ('email_type', 'recipient', 'subject', 'sent_at', 'status')
+    search_fields = ('recipient', 'subject', 'status')
+    list_filter = ('email_type', 'status', 'sent_at')
+
+
 admin.site.register(Language)
 admin.site.register(People, PeopleAdmin)
 admin.site.register(PeopleExternalCC, PeopleExternalCCAdmin)
@@ -124,3 +130,4 @@ admin.site.register(PeopleInternalTO, PeopleInternalTOAdmin)
 admin.site.register(PeopleInternalBCC, PeopleInternalBCCAdmin)
 admin.site.register(EmailContent, EmailContentAdmin)
 admin.site.register(NotificationSettings)
+admin.site.register(EmailLog, EmailLogAdmin)

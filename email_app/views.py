@@ -1,9 +1,10 @@
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from .models import Language, People, PeopleExternalCC, PeopleExternalBCC, PeopleInternalTO, PeopleInternalBCC, \
-    EmailContent, NotificationSettings
+    EmailContent, NotificationSettings, EmailLog
 from .serializers import LanguageSerializer, PeopleSerializer, PeopleExternalCCSerializer, PeopleExternalBCCSerializer, \
-    PeopleInternalTOSerializer, PeopleInternalBCCSerializer, EmailContentSerializer, NotificationSettingsSerializer
+    PeopleInternalTOSerializer, PeopleInternalBCCSerializer, EmailContentSerializer, NotificationSettingsSerializer, \
+    EmailLogSerializer
 
 
 class LanguageViewSet(viewsets.ModelViewSet):
@@ -67,3 +68,8 @@ class NotificationSettingsViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelM
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+
+class EmailLogViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = EmailLog.objects.all()
+    serializer_class = EmailLogSerializer

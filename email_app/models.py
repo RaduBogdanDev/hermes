@@ -76,3 +76,23 @@ class NotificationSettings(models.Model):
         if not self.pk and NotificationSettings.objects.exists():
             raise ValidationError('There can be only one NotificationSettings instance.')
         return super(NotificationSettings, self).save(*args, **kwargs)
+
+
+class EmailLog(models.Model):
+    email_type_choices = [
+        ('birthday', 'Birthday Email'),
+        ('internal_notification', 'Internal Notification Email')
+    ]
+
+    email_type = models.CharField(max_length=50, choices=email_type_choices)
+    recipient = models.EmailField()
+    cc = models.TextField(blank=True, null=True)
+    bcc = models.TextField(blank=True, null=True)
+    subject = models.CharField(max_length=255)
+    body = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50)  # success or failure
+    error_message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.email_type} to {self.recipient} at {self.sent_at}"

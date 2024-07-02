@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import LanguageViewSet, PeopleViewSet, PeopleExternalCCViewSet, PeopleExternalBCCViewSet, \
-    PeopleInternalTOViewSet, PeopleInternalBCCViewSet, EmailContentViewSet, NotificationSettingsViewSet
+    PeopleInternalTOViewSet, PeopleInternalBCCViewSet, EmailContentViewSet, NotificationSettingsViewSet, EmailLogViewSet
 
 router = DefaultRouter()
 router.register(r'languages', LanguageViewSet)
@@ -12,6 +12,7 @@ router.register(r'people_internal_to', PeopleInternalTOViewSet)
 router.register(r'people_internal_bcc', PeopleInternalBCCViewSet)
 router.register(r'email_content', EmailContentViewSet)
 router.register(r'notification_settings', NotificationSettingsViewSet, basename='notification_settings')
+router.register(r'email_logs', EmailLogViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -163,10 +163,9 @@ def main():
     for person in people:
         birthday_date = datetime.strptime(person[4], '%d/%m')
         notification_date = birthday_date - timedelta(days=internal_notification_days)
-        logger.info(f"Bogdan {notification_date}")
+        logger.info(notification_date)
         if notification_date.strftime('%d/%m') == today:
-            logger.info(f'Today is {today}')
-            logger.info(f'Time {notification_date}')
+            logger.info(f'Today is {today} and time to notification is {notification_date} - YEEEEEEEEEEEEES')
             send_internal_notification_email({
                 'name': person[2],
                 'email': person[1],

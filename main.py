@@ -104,12 +104,17 @@ def send_email(to, subject, body, cc=None, bcc=None, email_type=None):
     logger.info('Email log entry created')
 
 
+def replace_placeholders(content, person):
+    return content.replace('{person_name}', person['name']).replace('{person_email}', person['email']).replace(
+        '{person_birthday}', person['birthday'])
+
+
 def send_birthday_email(person):
     logger.info(f'Sending birthday email to {person["name"]} ({person["email"]})')
     email_content = fetch_one('SELECT * FROM EmailContent WHERE language_id=?', (person['language_id'],))
 
-    subject = email_content[3]
-    body = email_content[2]
+    subject = replace_placeholders(email_content[3], person)
+    body = replace_placeholders(email_content[2], person)
 
     external_cc = [p[0] for p in fetch_all('SELECT email FROM PeopleExternalCC')]
     external_bcc = [p[0] for p in fetch_all('SELECT email FROM PeopleExternalBCC')]
@@ -121,8 +126,8 @@ def send_internal_notification_email(person):
     logger.info(f'Sending internal notification email for {person["name"]} ({person["email"]})')
     email_content = fetch_one('SELECT * FROM EmailContent WHERE language_id=?', (person['language_id'],))
 
-    subject = email_content[5]
-    body = email_content[4]
+    subject = replace_placeholders(email_content[5], person)
+    body = replace_placeholders(email_content[4], person)
 
     internal_to = [p[0] for p in fetch_all('SELECT email FROM PeopleInternalTO')]
     internal_bcc = [p[0] for p in fetch_all('SELECT email FROM PeopleInternalBCC')]
@@ -149,6 +154,7 @@ def main():
         send_birthday_email({
             'name': person[2],
             'email': person[1],
+            'birthday': person[4],
             'language_id': person[3]
         })
 
@@ -161,6 +167,7 @@ def main():
             send_internal_notification_email({
                 'name': person[2],
                 'email': person[1],
+                'birthday': person[4],
                 'language_id': person[3]
             })
 

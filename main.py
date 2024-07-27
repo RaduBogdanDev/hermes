@@ -162,9 +162,9 @@ def main():
     people = fetch_all('SELECT * FROM People')
     for person in people:
         birthday_date = datetime.strptime(person[4], '%d/%m')
-        notification_date = birthday_date - timedelta(days=internal_notification_days)
-        logger.info(notification_date)
-        if notification_date.strftime('%d/%m') == today:
+        notification_date = (birthday_date - timedelta(days=internal_notification_days)).strftime('%d/%m')
+        logger.info(f'Notification date for {person[2]} is {notification_date}')
+        if notification_date == today:
             logger.info(f'Today is {today} and time to notification is {notification_date} - YEEEEEEEEEEEEES')
             send_internal_notification_email({
                 'name': person[2],

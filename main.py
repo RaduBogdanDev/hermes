@@ -132,7 +132,7 @@ def send_internal_notification_email(person):
     internal_to = [p[0] for p in fetch_all('SELECT email FROM PeopleInternalTO')]
     internal_bcc = [p[0] for p in fetch_all('SELECT email FROM PeopleInternalBCC')]
 
-    send_email(internal_to, subject, body, cc=[person['email']], bcc=internal_bcc, email_type='internal_notification')
+    send_email(internal_to, subject, body, cc=[], bcc=internal_bcc, email_type='internal_notification')
 
 
 def main():

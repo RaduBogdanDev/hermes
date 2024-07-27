@@ -83,7 +83,7 @@ def send_email(to, subject, body, cc=None, bcc=None, email_type=None):
     if bcc:
         msg['Bcc'] = ', '.join(bcc)
 
-    msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(body, 'html'))
 
     try:
         logger.info(f'Sending email to: {to}, cc: {cc}, bcc: {bcc}')
